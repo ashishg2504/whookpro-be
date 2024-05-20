@@ -6,7 +6,7 @@ This project is a full-stack application for managing webhooks, including user a
 
 ### Express Server
 
-1. Install
+1. Clone this repo
 2. Create .env
 3. Paste content of env file share in .env
 4. npm install --force
