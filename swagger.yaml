@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  title: WHOOKPRO API
+  version: 1.0.0
+  description: API documentation for WHOOKPRO
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+servers:
+- url: http://localhost:4000
+  description: Local server
+
+tags:
+- name: User Authentication
+  description: Endpoints related to user authentication
+- name: Webhook
+  description: Endpoints related to Web Hook
+- name: Event
+  description: Endpoints related to Event
+
+paths:
+  /api/user/signUp:
+    post:
+      tags:
+      - User Authentication
+      summary: Sign Up with user credential
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                fullName:
+                  type: string
+      responses:
+        '201':
+          description: User Registered
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
+
+  /api/user/login:
+    post:
+      tags:
+      - User Authentication
+      summary: Login with user detail
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User Logged In
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
+
+  /api/webhook/create:
+    post:
+      security:
+      - BearerAuth: []
+      tags:
+      - Webhook
+      summary: Create Webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceName:
+                  type: string
+                sourceUrl:
+                  type: string
+      responses:
+        '201':
+          description: Webhook Created
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
+
+  /api/webhook/fetchAll:
+    get:
+      security:
+      - BearerAuth: []
+      tags:
+      - Webhook
+      summary: Fetch Users Webhook
+      responses:
+        '200':
+          description: Webhook List Fetched
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal server error
+
+  /api/webhook/fetch/{id}:
+    get:
+      security:
+      - BearerAuth: []
+      tags:
+      - Webhook
+      summary: Fetch Webhook by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the webhook to fetch
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Webhook Fetched
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+
+  /api/webhook/cancel/{id}:
+    put:
+      security:
+      - BearerAuth: []
+      tags:
+      - Webhook
+      summary: Cancel Webhook by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the webhook to cancel
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Webhook Cancelled
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error
+  /api/event/{code}:
+    post:
+      tags:
+      - Event
+      summary: Create event
+      parameters:
+      - name: code
+        in: path
+        required: true
+        description: The Callback code of the webhook you want to hit
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Event Created
+        '500':
+          description: Internal server error
+
+  /api/event/{id}:
+    get:
+      security:
+      - BearerAuth: []
+      tags:
+      - Event
+      summary: Fetch event by id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: The ID of the webhook to fetch event
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Event Fetched
+        '403':
+          description: Forbidden
+        '500':
+          description: Internal server error

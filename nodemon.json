@@ -1,0 +1,12 @@
+{
+    "watch": [
+        "*.js",
+        "*.yaml"
+    ],
+    "ext": "js,yaml",
+    "ignore": [
+        "node_modules/",
+        "script/"
+    ],
+    "exec": "node server.js"
+}
